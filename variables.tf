@@ -10,6 +10,12 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
+variable "instance_key_name" {
+  description = "Name of the ssh key used to log in to the instances"
+  type        = string
+  default     = "us-east-2_vlad"
+}
+
 variable "instance_count" {
   description = "The number of instances to be deployed"
   type        = number
