@@ -83,16 +83,17 @@ resource "aws_security_group" "all_tcp_v4" {
 
 resource "aws_instance" "app_server" {
   ami                         = "ami-01e7ca2ef94a0ae86"
-  key_name                    = "us-east-2_vlad"
-  instance_type               = "t2.micro"
+  key_name                    = var.instance_key_name
+  instance_type               = var.instance_type
   subnet_id                   = aws_subnet.main.id
   vpc_security_group_ids      = [aws_security_group.all_tcp_v4.id]
   associate_public_ip_address = true
-  count                       = 3
+  count                       = var.instance_count
   tags = {
     Name = var.instance_name
   }
 
+  # use remote-exec to ensure the instances are in running state before creating dependent resources
   provisioner "remote-exec" {
     inline = ["sudo apt install -y python3"]
 
@@ -106,7 +107,7 @@ resource "aws_instance" "app_server" {
 
 }
 
-resource "null_resource" "agregate_instances" {
+resource "null_resource" "aggregate_instances" {
   triggers = {
     instance_ips = join(", ", aws_instance.app_server[*].public_ip)
   }
