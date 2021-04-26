@@ -1,0 +1,22 @@
+- name: Sets Nginx conf file
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ http_conf }}"
+  notify: Reload Nginx # we need to reload nginx in case an already enabled conf gets modified
+
+- name: Enables new site
+  file:
+    src: "/etc/nginx/sites-available/{{ http_conf }}"
+    dest: "/etc/nginx/sites-enabled/{{ http_conf }}"
+    state: link
+  notify: Reload Nginx
+    
+- name: Removes "default" site
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: Reload Nginx  
+
+- name: Debug
+  ansible.builtin.debug:
+    msg: "inventory_hostname: {{ inventory_hostname }}"

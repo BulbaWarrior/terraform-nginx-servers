@@ -1,3 +1,18 @@
+{% if configure_upstreams %}
+
+upstream {{ upstream_name }} {
+
+{% for host in ansible_play_hosts %}
+{% if host != inventory_hostname %}
+        server {{ host }};
+{% endif %}
+{% endfor %}
+
+
+}
+
+{% endif %}
+
 server {
         listen {{ http_port }};
         root /var/www/html;

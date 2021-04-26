@@ -88,7 +88,7 @@ resource "aws_instance" "app_server" {
   subnet_id                   = aws_subnet.main.id
   vpc_security_group_ids      = [aws_security_group.all_tcp_v4.id]
   associate_public_ip_address = true
-  count                       = 2
+  count                       = 3
   tags = {
     Name = var.instance_name
   }
@@ -104,7 +104,14 @@ resource "aws_instance" "app_server" {
     }
   }
 
+}
+
+resource "null_resource" "agregate_instances" {
+  triggers = {
+    instance_ips = join(", ", aws_instance.app_server[*].public_ip)
+  }
+
   provisioner "local-exec" {
-    command = "yes | ansible-playbook -u ubuntu -i '${self.public_ip},' --private-key ${var.ssh_key_private} ansible/playbook.yml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu -i '${join(", ", aws_instance.app_server[*].public_ip)}' --private-key ${var.ssh_key_private} ansible/playbook.yml"
   }
 }
