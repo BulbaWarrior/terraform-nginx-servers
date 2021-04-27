@@ -5,5 +5,7 @@ This is a test module that creates creates several aws instances and then runs a
 - [ ] readme
 - [ ] manage ssh key using backend
 - [x] add servers' ips to upstream section
-- [ ] parameterize configuration with variables
+- [x] parameterize configuration with variables
 - [ ] create folders for different environments
+- [ ] Hook up github actions/circle ci to run linter and terraform plan on commits
+- [x] turn into modules
