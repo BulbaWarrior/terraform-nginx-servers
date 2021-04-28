@@ -9,6 +9,8 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #       AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
+      - name: debug
+        run: echo ${{ secrets.github_token }}
       - name: add hashicorp key
         run: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
       - name: add repo
