@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: aws_credentials
     steps:
+      - name: debug
+        run: echo $AWS_REGION
       - name: add hashicorp key
         run: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
       - name: add repo
