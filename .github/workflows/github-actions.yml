@@ -1,7 +1,7 @@
 name: Terraform validation
 on: [push]
 jobs:
-  Install Terraform and run plan:
+  terraform-plan:
     runs-on: ubuntu-latest
     steps:
       - name: add hashicorp key
