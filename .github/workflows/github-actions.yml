@@ -3,6 +3,7 @@ on: [push]
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
+    environment: aws_credentials
     steps:
       - name: add hashicorp key
         run: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
