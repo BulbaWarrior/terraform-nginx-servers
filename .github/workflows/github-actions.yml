@@ -9,8 +9,6 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #       AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
-      - name: debug
-        run: echo $AWS_REGION
       - name: add hashicorp key
         run: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
       - name: add repo
@@ -22,5 +20,14 @@ jobs:
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - run: terraform init
+      
+      - name: tflint
+        uses: reviewdog/action-tflint@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          fail_on_error: "true" # Optional. Fail action if errors are found
+          filter_mode: "nofilter" # Optional. Check all files, not just the diff
+          flags: "--module" # Optional. Add custom tflint flags
+          
       - run: terraform plan
       - run: echo "🍏 This job's status is ${{ job.status }}."
