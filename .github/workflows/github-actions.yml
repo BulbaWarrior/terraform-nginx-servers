@@ -18,10 +18,8 @@ jobs:
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - run: terraform init -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-      - name: Export aws credentials
-        run: > 
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          export AWS_REGION=${{ secrets.AWS_REGION }}
+      - run: export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}     
+      - run: export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: export AWS_REGION=${{ secrets.AWS_REGION }}
       - run: terraform plan
       - run: echo "🍏 This job's status is ${{ job.status }}."
