@@ -1,7 +1,24 @@
-variable "instance_name" {
-  description = "Name tag for the ec2 instance"
+variable "vpc_cidr" {
+  description = "cidr block of the vpc"
   type        = string
-  default     = "nginx instance"
+  default     = "10.0.0.0/24"
+}
+
+variable "vpc_tags" {
+  description = "Tags to be asscociated with every network component"
+  type        = map(any)
+  default = {
+    created_by = "vlad"
+  }
+}
+
+variable "instance_tags" {
+  description = "aws tags to be associated with instances"
+  type        = map(any)
+  default = {
+    Name       = "nginx-server"
+    created_by = "vlad"
+  }
 }
 
 variable "instance_type" {
@@ -20,6 +37,11 @@ variable "instance_count" {
   description = "The number of instances to be deployed"
   type        = number
   default     = 3
+}
+variable "instance_ami" {
+  description = "id of Amazon Machine Image to run on the instances"
+  type        = string
+  default     = "ami-01e7ca2ef94a0ae86"
 }
 
 variable "ssh_key_private" {

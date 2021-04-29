@@ -1,16 +1,12 @@
 resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/24"
-  tags = {
-    Name = "VladOS_VPC"
-  }
+  cidr_block = var.vpc_cidr
+  tags       = var.tags
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
-  tags = {
-    Name = "mygateway"
-  }
+  tags = var.tags
 }
 
 resource "aws_default_route_table" "main_route_table" {
@@ -20,11 +16,13 @@ resource "aws_default_route_table" "main_route_table" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+  tags = var.tags
 }
 
 resource "aws_subnet" "main" {
   vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.0.0/24"
+  cidr_block = var.vpc_cidr
+  tags       = var.tags
 }
 
 resource "aws_security_group" "all_tcp_v4" {
@@ -43,4 +41,5 @@ resource "aws_security_group" "all_tcp_v4" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = var.tags
 }

@@ -1,5 +1,7 @@
 variable "instance_ami" {
-  type = string
+  description = "id of Amazon Machine Image to run on the instances"
+  type        = string
+  default     = "ami-01e7ca2ef94a0ae86"
 }
 
 variable "instance_name" {
@@ -46,4 +48,13 @@ variable "playbook_path" {
   description = "Path to ansible playbook to be executed with the created host as inventory"
   type        = string
   default     = "ansible/playbool.yml"
+}
+
+variable "tags" {
+  description = "Tags to be associated with each instance"
+  type        = map(any)
+  default = {
+    Name       = "nginx-server"
+    created_by = "vlad"
+  }
 }

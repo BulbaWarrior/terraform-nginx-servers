@@ -6,9 +6,7 @@ resource "aws_instance" "app_server" {
   vpc_security_group_ids      = var.security_groups
   associate_public_ip_address = true
   count                       = var.instance_count
-  tags = {
-    Name = var.instance_name
-  }
+  tags                        = var.tags
 
   # use remote-exec to ensure the instances are in running state before creating dependent resources
   provisioner "remote-exec" {
