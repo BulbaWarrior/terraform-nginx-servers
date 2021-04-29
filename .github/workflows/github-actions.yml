@@ -1,13 +1,27 @@
 name: Terraform validation
 on: [push]
+
 jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    name: Run tflint
+    steps:
+      - name: tflint
+        uses: reviewdog/action-tflint@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-check
+          fail_on_error: "true" # Optional. Fail action if errors are found
+          filter_mode: "nofilter" # Optional. Check all files, not just the diff
+          flags: "--module" # Optional. Add custom tflint flags
+      
   terraform-plan:
+    needs: tflint
     runs-on: ubuntu-latest
     environment: aws_credentials
     env: 
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#       AWS_REGION: ${{ secrets.AWS_REGION }}
     steps:
       - name: add hashicorp key
         run: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -19,16 +33,6 @@ jobs:
         uses: actions/checkout@v2
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - run: terraform init
-      
-      - name: tflint
-        uses: reviewdog/action-tflint@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-check
-          fail_on_error: "true" # Optional. Fail action if errors are found
-          filter_mode: "nofilter" # Optional. Check all files, not just the diff
-          flags: "--module" # Optional. Add custom tflint flags
-          
+      - run: terraform init    
       - run: terraform plan
       - run: echo "🍏 This job's status is ${{ job.status }}."
