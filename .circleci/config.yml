@@ -5,8 +5,7 @@ version: 2.1
 
 jobs:
   terraform-apply:
-    docker:
-      - image: ubuntu
+    machine: true
     steps:
       - run:
           name: add hashicorp key
