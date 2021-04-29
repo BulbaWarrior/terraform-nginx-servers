@@ -5,7 +5,8 @@ version: 2.1
 
 jobs:
   terraform-apply:
-    machine: true
+    docker:
+      - image: alpine
     steps:
       - run:
           name: add hashicorp key
