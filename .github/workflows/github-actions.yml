@@ -6,7 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Run tflint
     steps:
-      - name: tflint
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        
+      - name: Run tflint
         uses: reviewdog/action-tflint@master
         with:
           github_token: ${{ secrets.github_token }}
